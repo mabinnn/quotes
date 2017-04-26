@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      .welcome, .logout {
+        display: inline-block;
+        margin-left: 30px;
+      }
+      .logout {
+        margin-left: 300px;
+        font-size: 16px;
+        color: red;
+      }
+      .quotedby, .messageby, .sub_quote {
+        display: block;
+      }
+      .messageby {
+        margin-top: 20px;
+      }
+      #contribution {
+        background-color: rgb(175, 179, 222);
+        padding: 20px;
+      }
+      .submitted_message, .submitted_author {
+        margin-top: 5px;
+      }
+      .submitted_author {
+        font-style: italic;
+        margin-bottom: 10px;
+      }
+      .submitted_message {
+        margin-top: 70px;
+      }
+      #existing_quotes {
+        display: inline-block;
+        margin-right: 900px;
+      }
+      #mylist {
+        display: inline-block;
+        margin-left: 800px;
+      }
+
+    </style>
+    <title>Welcome!</title>
+  </head>
+  <body>
+    <div id='wrapper'>
+      <div id='banner'>
+        <h1 class='welcome'>Welcome to our site, {{userInstance.first_name}}! </h1>
+        <a class='logout' href="/logout">Logout</a>
+      </div>
+      <div id='contribution'>
+          <h3>Contribute a Quote</h3>
+          <form action='/contribute' method='post'>
+          {% csrf_token %}
+              <label class='quotedby' for=''>Quoted By:</label>
+              <input type='text' name='quoted_by'>
+              <label class='messageby' for=''>Message:</label>
+              <input type='text' name='message' style='height: 80px' placeholder='Enter your quotes here'>
+              <input class='sub_quote' type='submit' name='submit_quote'>
+          </form>
+      </div>
+      <div id='existing_quotes'>
+        <h1 class='quotes_h1'>Quotable Quotes</h1>
+          {% for message in messages %}
+           <p class='submitted_message'>{{message.message}}</p>
+           <p class='submitted_author'>by {{message.quoted_by}}</p>
+           <a href="/addlist/{{message.id}}">Add to my favorites</a>
+          {% endfor %}
+      </div>
+      <div id='mylist'>
+        <h1 class='faves' style="font-size: 32px;">Favorite Quotes</h1>
+        <p>Here are your favorite quotes:</p>
+        {% for fave in favorites %}
+          <p>{{fave.message}}</p>
+          <p>{{fave.quoted_by}}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>
